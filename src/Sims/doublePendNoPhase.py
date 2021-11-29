@@ -6,9 +6,10 @@ from matplotlib import style
 from numpy.lib.function_base import append
 style.use('dark_background')
 
+#doublePend.py is a graph of a double pendulum system.
 #Equations for double pendulum taken from https://www.myphysicslab.com/pendulum/double-pendulum-en.html
 
-TIMESTEP = .01
+TIMESTEP = .001
 
 last_x = 1
 last_y = 1
@@ -22,21 +23,19 @@ xprime = []
 yprime = []
 
 mass = 10
-fig = plt.figure()
-ax = plt.axes(projection='3d')
+fig, ax = plt.subplots(1)
 
-G = 9.8 * 100
+G = 9.8 * 10000
 theta_1 = np.pi/3
-theta_2 = np.pi/3 
+theta_2 = np.pi/3 * 2
 length_1 = 20
-length_2 = 15
+length_2 = 10
 mass_1 = 10
-mass_2 = 10
+mass_2 = 15
 ang_v_1 = 5
 ang_v_2 = -6
 theta_ones = []
 theta_twos = []
-omegas = []
 
 def main():
     gen_states()
@@ -46,18 +45,38 @@ def main():
 
 current_t1 = []
 current_t2 = []
-current_omegas = []
 def animate(i):
-    global ang_v_1
     ax.clear()
     #ax.set_xlim(0, 40)
     #ax.set_ylim(-25, 25)
+    
+    ax.set_xlim(-50, 50)
+    ax.set_ylim(-50, 50)
+
+    
+    ly = length_1*np.cos(theta_ones[i])
+    lx = length_1*np.sin(theta_ones[i])
+    lxo = lx
+    lyo = ly
+    string = [[0], [0]]
+    string[0].append(lx)
+    string[1].append(-ly)
+    ax.plot(string[0], string[1], color='white')
+    ax.plot(lx, -ly, markerfacecolor='r', markeredgecolor='r', marker='.', markersize=30, alpha=1)
+    
+    ly = length_2*np.cos(theta_twos[i])
+    lx = length_2*np.sin(theta_twos[i])
+    string = [[lxo], [-lyo]]
+    string[0].append(lx + lxo)
+    string[1].append(-ly - lyo)
+    ax.plot(string[0], string[1], color='white')
+    ax.plot(lx + lxo, -ly - lyo, markerfacecolor='r', markeredgecolor='r', marker='.', markersize=30, alpha=1)
+    
+    
+    
     current_t1.append(theta_twos[i])
     current_t2.append(theta_ones[i])
-    current_omegas.append(omegas[i])
-    ax.plot3D(current_t1, current_t2, current_omegas, color='white')
-    
-
+    #ax.plot(current_t1, current_t2, color='white')
     
         
 def gen_states():
@@ -77,9 +96,18 @@ def gen_states():
         ang_v_2 += change_in_angular_2*TIMESTEP
         theta_1+=ang_v_1*TIMESTEP
         theta_2+=ang_v_2*TIMESTEP
+        
+        theta_1_deg = np.rad2deg(theta_1)
+        theta_2_deg = np.rad2deg(theta_2)
+        #if (not np.isnan(theta_1_deg)): print(theta_1_deg)
+        
+     
+        
+        theta_1 = np.deg2rad(theta_1_deg)
+        theta_2 = np.deg2rad(theta_2_deg)
+        
         theta_ones.append(theta_1)
         theta_twos.append(theta_2)
-        omegas.append(ang_v_2)
         time += TIMESTEP
 
 main()

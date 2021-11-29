@@ -1,1 +1,0 @@
-Collection of programs related to nonlinaer systems.
