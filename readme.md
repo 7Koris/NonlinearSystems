@@ -1,4 +1,4 @@
-# Particle Lab
+# Nonlinear Systems
 
 Collection of Python scripts that simulate nonlinear systems.
 
