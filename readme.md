@@ -37,7 +37,7 @@ Collection of Python scripts that simulate nonlinear systems.
 
 ## Authors
 
-Kamran Haq
+Koris Lucienne Haq
 
 ## Acknowledgments
 
